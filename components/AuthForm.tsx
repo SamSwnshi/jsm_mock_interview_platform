@@ -10,17 +10,20 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
+import FormField from "./FormField";
+import { useRouter } from "next/navigation";
 
 
-const authFormSchema = (type: FormType) =>{
+const authFormSchema = (type: FormType) => {
   return z.object({
     name: type === "sign-up" ? z.string().min(3) : z.string().optional(),
-    email : z.string().email(),
+    email: z.string().email(),
     password: z.string().min(3)
   })
 }
 
 const AuthForm = ({ type }: { type: FormType }) => {
+  const router = useRouter()
   const formSchema = authFormSchema(type)
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -35,13 +38,14 @@ const AuthForm = ({ type }: { type: FormType }) => {
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      if(type === 'sign-up' ){
-        console.log("SING UP",values)
-      }else{
-        console.log("SING IN",values)
-
+      if (type === 'sign-up') {
+        toast.success("Account created successfully. Please Sing-In")
+        router.push("/sign-in")
+      } else {
+         toast.success("Sign in Successfully!")
+        router.push("/")
       }
-      
+
     } catch (error) {
       console.log(error)
       toast.error(`There was an error: ${error}`)
@@ -60,9 +64,11 @@ const AuthForm = ({ type }: { type: FormType }) => {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6 mt-4 form">
-            {!isSingIn && <p>Name</p>}
-            <p>Email</p>
-            <p>Password</p>
+            {!isSingIn && (
+              <FormField control={form.control} name="name" placeholder="Your name" label="Name" />
+            )}
+            <FormField control={form.control} name="email" placeholder="Your email" label="Email" type="email" />
+            <FormField control={form.control} name="password" placeholder="Your password" label="Password" type="password" />
             <Button type="submit" className="btn">{isSingIn ? "Sing In" : "Create an Account"}</Button>
           </form>
         </Form>
