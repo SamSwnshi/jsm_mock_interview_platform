@@ -4,9 +4,9 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
+  projectId: "mock-interview-5160e",
   apiKey: "AIzaSyDUMJje1foSN4jGFtkBhhNRL-mBIwzAyrw",
   authDomain: "mock-interview-5160e.firebaseapp.com",
-  projectId: "mock-interview-5160e",
   storageBucket: "mock-interview-5160e.firebasestorage.app",
   messagingSenderId: "49480521341",
   appId: "1:49480521341:web:a86c968d70981a07bd8314",
